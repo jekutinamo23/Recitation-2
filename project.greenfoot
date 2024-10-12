@@ -1,45 +1,64 @@
-#Greenfoot project file
-class.CircleWorld.image=fingerprint.jpg
-dependency1.from=CircleWorld
-dependency1.to=Circle
-dependency1.type=UsesDependency
-editor.fx.0.height=955
-editor.fx.0.width=1498
-editor.fx.0.x=204
-editor.fx.0.y=96
-height=691
-package.numDependencies=1
-package.numTargets=2
-project.charset=UTF-8
-publish.hasSource=false
-publish.locked=true
-publish.longDesc=
-publish.shortDesc=
-publish.tags=
-publish.title=
-publish.url=
-readme.height=60
-readme.name=@README
-readme.width=48
-readme.x=10
-readme.y=10
-simulation.speed=50
-target1.height=70
-target1.name=Circle
-target1.showInterface=false
-target1.type=ClassTarget
-target1.width=120
-target1.x=0
-target1.y=0
-target2.height=70
-target2.name=CircleWorld
-target2.showInterface=false
-target2.type=ClassTarget
-target2.width=120
-target2.x=0
-target2.y=0
-version=3.0.0
-width=932
-world.lastInstantiated=CircleWorld
-xPosition=32
-yPosition=231
+import greenfoot.*;  // (World, greenfoot.Actor, greenfoot.GreenfootImage, Greenfoot and MouseInfo)
+import java.util.Random;
+
+/**
+ * Write a description of class Circle here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class Circle extends Actor
+{
+    private final static int MAX_RADIUS = 20;
+
+    private int radius;
+    private int increment;
+    private int maxRadius;
+    GreenfootImage image;
+    Random rand;
+
+    private void init(int maxRadius){
+        this.maxRadius = maxRadius;
+        increment = maxRadius;
+        radius = Math.abs(increment-maxRadius);
+        image = new GreenfootImage(2*maxRadius,2*maxRadius);
+        image.setColor(Color.RED);
+        rand = new Random(17);
+        setRotation(90);
+    }
+
+    public Circle(){
+        init(MAX_RADIUS);
+    }
+
+    public Circle(int maxRadius){
+        init(maxRadius);
+    }
+
+    private void pulsate(){
+        image.clear();
+        image.fillOval(maxRadius-radius,maxRadius-radius,
+                        2*radius,2*radius);
+        setImage(image);
+        increment = (increment+1) % (2*maxRadius);
+        radius = Math.abs(increment-maxRadius);
+    }
+
+    private void moveIt(){
+        int randomValue = rand.nextInt(21) - 10;
+        int currentRotation = getRotation();
+        int newRotation = currentRotation + randomValue;
+        setRotation(newRotation);
+        move(1);
+    }
+
+    /**
+     * Act - do whatever the Circle wants to do. This method is called whenever
+     * the 'Act' or 'Run' button gets pressed in the environment.
+     */
+    public void act()
+    {
+        pulsate();
+        moveIt();
+    }
+}
